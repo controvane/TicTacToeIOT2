@@ -16,7 +16,7 @@ const int waitTime = 100;
 
 String printer;
 
-char square[10] = {'o','1','2','3','4','5','6','7','8','9'};
+char sqr[10] = {'o','1','2','3','4','5','6','7','8','9'};
 
 struct PosiblePlay {
 	int jugada;
@@ -49,8 +49,8 @@ void loop()
 		n = n - 48;
 	}
 	if (n >= 1 && n <= 9) {
-		if (square[n] == ' ') {
-			square[n] = 'X';
+		if (sqr[n] == ' ') {
+			sqr[n] = 'X';
 			n = play();
 			return;
 		}
@@ -76,31 +76,31 @@ void board()
 	Serial.println(String("     |     |     "));
 	
 	Serial.print(String("  "));
-	Serial.print(String(square[1]));
+	Serial.print(String(sqr[1]));
 	Serial.print(String("  |  ")); 
-	Serial.print(String(square[2]));
+	Serial.print(String(sqr[2]));
 	Serial.print(String("  |  "));
-	Serial.println(String(square[3]));
+	Serial.println(String(sqr[3]));
 	
 	Serial.println(String("_____|_____|_____"));
 	Serial.println(String("     |     |     "));
 	
 	Serial.print(String("  "));
-	Serial.print(String(square[4]));
+	Serial.print(String(sqr[4]));
 	Serial.print(String("  |  ")); 
-	Serial.print(String(square[5]));
+	Serial.print(String(sqr[5]));
 	Serial.print(String("  |  "));
-	Serial.println(String(square[6]));
+	Serial.println(String(sqr[6]));
 	
 	Serial.println(String("_____|_____|_____"));
 	Serial.println(String("     |     |     "));
 	
 	Serial.print(String("  "));
-	Serial.print(String(square[7]));
+	Serial.print(String(sqr[7]));
 	Serial.print(String("  |  ")); 
-	Serial.print(String(square[8]));
+	Serial.print(String(sqr[8]));
 	Serial.print(String("  |  "));
-	Serial.println(String(square[9]));
+	Serial.println(String(sqr[9]));
 	
 	
 	Serial.println(String("     |     |     "));
@@ -108,7 +108,7 @@ void board()
 
 void resetBoard(){
 	for(int i = 0; i < 10; i++){
-		square[i] = ' ';
+		sqr[i] = ' ';
 	}
 }
 
@@ -160,10 +160,10 @@ PosiblePlay theoreticalPlay(char player) {
 	result.ganador = adversarynum;
 	result.jugada = 0;
 	for (int i = 1; i <= 9; i++) {
-		if (square[i] == ' ') {
+		if (sqr[i] == ' ') {
 			PosiblePlay trial;
-			square[i] = player;
-			int check = checkWin(square);
+			sqr[i] = player;
+			int check = checkWin(sqr);
 			if (check == -1) {
 				trial = theoreticalPlay(adversary);
 				trial.jugada = i;
@@ -174,7 +174,7 @@ PosiblePlay theoreticalPlay(char player) {
 				trial.ganador = check;
 				trial.playValue = (check == playernum) ? 1 : (check == 0) ? 0 : -1;
 			}
-			square[i] = ' ';
+			sqr[i] = ' ';
 			if (trial.playValue > result.playValue) {
 				result.jugada = trial.jugada;
 				result.ganador = trial.ganador;
@@ -186,16 +186,16 @@ PosiblePlay theoreticalPlay(char player) {
 }
 
 int play() {
-	int check = checkWin(square);
+	int check = checkWin(sqr);
 	if (check == -1) {
-		if (square[5] == ' ') {
-			square[5] = 'O';
+		if (sqr[5] == ' ') {
+			sqr[5] = 'O';
 		}
 		else {
 			PosiblePlay result = theoreticalPlay('O');
-			square[result.jugada] = 'O';
+			sqr[result.jugada] = 'O';
 		}
-		check = checkWin(square);
+		check = checkWin(sqr);
 		if (check == 2) {
 			Serial.println(String("Gano el Jugador 2(PC), gracias por intentar, Dr. Floyd"));
 		}
